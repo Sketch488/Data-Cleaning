@@ -10,20 +10,12 @@ if os.path.exists(filepath):
     
     #Proper the title column
     data["title"] = data["title"].astype(str).str.strip().str.title()
-    
-    #Sort by title
-    data = data.sort_values("title").reset_index(drop=True)
 
-    #Remove dupes
-    data = data.drop_duplicates(subset=["title", "release_year"], keep="first").reset_index(drop=True)
-
-    #Remove NaN
-    data = data.dropna(subset=["title", "release_year"]).reset_index(drop=True)
-    #data = data.dropna.reset_index(drop=True)
-
-    #data["director"] = data["director"].fillna("Unknown")
-    #data["cast"] = data["cast"].fillna("Unknown")
-    #data["rating"] = data["rating"].fillna("Not Rated")
+    data = (
+        data.sort_values("title").reset_index(drop=True)
+        .drop_duplicates(subset=["title", "release_year"], keep="first").reset_index(drop=True)
+        .dropna(subset=["title", "release_year"]).reset_index(drop=True)
+    )
 
     #Save to new CSV
     data.to_csv("NetflixV1_Sorted.csv", index=False)
